@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class DashBoardProvider extends ChangeNotifier {
   bool isProjectEdit = false;
-  String menuSelectedItem = '';
+  String menuSelectedItem = 'Async';
   String subMenuSelectedItem = 'Projects';
   int userSelectedIndex = 0;
   int userActionsTabIndex = 5;
@@ -58,6 +58,9 @@ class DashBoardProvider extends ChangeNotifier {
 
   void selectMenuItem({required String selectedItem}) {
     menuSelectedItem = selectedItem;
+    if(selectedItem != 'Async') {
+      subMenuSelectedItem = '';
+    }
     notifyListeners();
   }
 

@@ -18,7 +18,7 @@ class SideTile extends StatelessWidget {
         color: const Color(0xFF55b0ab),
         borderRadius: BorderRadius.circular(10),
       ) : null,
-      child: GestureDetector(
+      child: InkWell(
         onTap: () {
           context.read<DashBoardProvider>().selectMenuItem(selectedItem: title);
         },

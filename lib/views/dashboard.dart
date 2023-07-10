@@ -57,6 +57,7 @@ class Dashboard extends StatelessWidget {
                             Icons.calendar_month_rounded,
                             color: Colors.white,
                           ),
+                          isInitialExpanded: context.watch<DashBoardProvider>().subMenuSelectedItem == 'Projects',
                           subTitle: Consts().menuTabs,
                         ),
                         const SideExpansionTile(
@@ -202,7 +203,8 @@ class Dashboard extends StatelessWidget {
             ),
           Expanded(
               flex: 8,
-              child: context.watch<DashBoardProvider>().subMenuSelectedItem == 'Projects' ?
+              child: (context.watch<DashBoardProvider>().menuSelectedItem == 'Async' &&
+                  context.watch<DashBoardProvider>().subMenuSelectedItem == 'Projects') ?
               const ProjectDetails() :
               Container(
                 height: double.infinity,

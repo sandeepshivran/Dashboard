@@ -8,21 +8,24 @@ class SideExpansionTile extends StatelessWidget {
     required this.title,
     required this.leadingWidget,
     required this.subTitle,
+    this.isInitialExpanded = false,
     final Key? key,
   }) : super(key: key);
   final String title;
   final Widget leadingWidget;
   final List<String> subTitle;
+  final bool isInitialExpanded;
 
   @override
   Widget build(final BuildContext context) => ExpansionTileCard(
+    key: ValueKey(title),
     contentPadding: const EdgeInsets.only(right: 4),
     elevation: 0,
     baseColor: Colors.transparent,
     expandedColor: Colors.transparent,
     leading: leadingWidget,
     trailing: _trailingIcon(),
-    initiallyExpanded: context.watch<DashBoardProvider>().subMenuSelectedItem == 'Projects',
+    initiallyExpanded: isInitialExpanded,
     animateTrailing: true,
     title: Text(
       title,

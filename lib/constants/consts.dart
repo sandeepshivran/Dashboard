@@ -13,11 +13,11 @@ class Consts {
   ];
 
   List<UserChatDetailsModel> userChats = [
-    UserChatDetailsModel(userId: 1, isOwnMessage: false, message: "Hi everyone, let's start the call soon", time: DateTime(2023,07,08,06,57,0,0,0)),
-    UserChatDetailsModel(userId: 1, isOwnMessage: true, message: "The release of latest sheets containing Lorem lpsum passages", time: DateTime(2023,07,08,06,57,0,0,0)),
-    UserChatDetailsModel(userId: 1, isOwnMessage: false, message: "It is a long established fact that a reader will be distracted by the readable content of the page", time: DateTime(2023,07,08,06,57,0,0,0)),
-    UserChatDetailsModel(userId: 1, isOwnMessage: false, message: "Various versions have evolved over the years", time: DateTime.now()),
     UserChatDetailsModel(userId: 1, isOwnMessage: true, message: "Contrary to popular belief, Lorem lpsum is not simply random text", time: DateTime.now()),
+    UserChatDetailsModel(userId: 1, isOwnMessage: false, message: "Various versions have evolved over the years", time: DateTime.now()),
+    UserChatDetailsModel(userId: 1, isOwnMessage: false, message: "It is a long established fact that a reader will be distracted by the readable content of the page", time: DateTime(2023,07,08,06,57,0,0,0)),
+    UserChatDetailsModel(userId: 1, isOwnMessage: true, message: "The release of latest sheets containing Lorem lpsum passages", time: DateTime(2023,07,08,06,57,0,0,0)),
+    UserChatDetailsModel(userId: 1, isOwnMessage: false, message: "Hi everyone, let's start the call soon", time: DateTime(2023,07,08,06,57,0,0,0)),
   ];
 
   List<String> projectDetails = [

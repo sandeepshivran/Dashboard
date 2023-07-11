@@ -10,6 +10,7 @@ class DashBoardProvider extends ChangeNotifier {
   int userSelectedIndex = 0;
   int userActionsTabIndex = 5;
   List<String> projectDetailsTabs = Consts().projectDetails;
+  ScrollController scrollController = ScrollController();
 
   final TextEditingController projectNameEditingController = TextEditingController(text: 'Patient advocacy group Oct 2023');
   final TextEditingController projectDescEditingController = TextEditingController(text: 'Project Descriptions......');
@@ -18,6 +19,14 @@ class DashBoardProvider extends ChangeNotifier {
 
   List<UserDetailsModel> userDetails = Consts().userDetailsConsts;
   List<UserChatDetailsModel> userChatDetails = Consts().userChats;
+
+  void scrollToBottom() {
+    scrollController.animateTo(
+      0, // Scroll to the top
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
 
   void editProject() {
     isProjectEdit = !isProjectEdit;
@@ -39,13 +48,12 @@ class DashBoardProvider extends ChangeNotifier {
   }
 
   void addMessageToChatList() {
-    userChatDetails.add(
-      UserChatDetailsModel(
-          userId: userDetails[userSelectedIndex].userId,
-          isOwnMessage: true,
-          message: chatEditingController.text,
-          time: DateTime.now(),
-      ),
+    userChatDetails.insert(0, UserChatDetailsModel(
+      userId: userDetails[userSelectedIndex].userId,
+      isOwnMessage: true,
+      message: chatEditingController.text,
+      time: DateTime.now(),
+    ),
     );
     chatEditingController.text = '';
     notifyListeners();

@@ -559,11 +559,17 @@ class ProjectDetails extends StatelessWidget {
                                   child: Stack(
                                     children: [
                                       ListView.builder(
+                                        controller: context.watch<DashBoardProvider>().scrollController,
                                         itemCount: context.watch<DashBoardProvider>().userChatDetails.length,
                                         scrollDirection: Axis.vertical,
                                         shrinkWrap: true,
+                                        reverse: true,
                                         physics: const ClampingScrollPhysics(),
                                         itemBuilder: (_, index) {
+                                          var bottomPadding = 10.0;
+                                          if(index == 0) {
+                                            bottomPadding = 100;
+                                          }
                                           return Column(
                                             crossAxisAlignment: context.watch<DashBoardProvider>().userChatDetails[index].isOwnMessage ?
                                             CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -574,7 +580,7 @@ class ProjectDetails extends StatelessWidget {
                                               if(context.watch<DashBoardProvider>().userChatDetails[index].userId ==
                                                   context.watch<DashBoardProvider>().userDetails[context.watch<DashBoardProvider>().userSelectedIndex].userId)
                                               Container(
-                                                margin: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                                                margin: EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0, bottom: bottomPadding),
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(10),
                                                   color: context.watch<DashBoardProvider>().userChatDetails[index].isOwnMessage ?
@@ -701,7 +707,7 @@ class ProjectDetails extends StatelessWidget {
           DateTime.now().toString().substring(0, 10)
           ? 'Today'
           : DateFormat.yMMMMd().format(
-        DateTime.parse(context.watch<DashBoardProvider>().userChatDetails[index].time.toString() ?? '',),
+        DateTime.parse(context.watch<DashBoardProvider>().userChatDetails[index].time.toString(),),
       );
       return Center(
         child: Text(

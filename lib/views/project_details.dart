@@ -1,4 +1,5 @@
 
+import 'package:dashboard/models/user_chat_details_model.dart';
 import 'package:dashboard/providers/dashboardProvider.dart';
 import 'package:dashboard/views/title_description_details.dart';
 import 'package:flutter/material.dart';
@@ -558,50 +559,7 @@ class ProjectDetails extends StatelessWidget {
                                   color: Colors.white,
                                   child: Stack(
                                     children: [
-                                      ListView.builder(
-                                        controller: context.watch<DashBoardProvider>().scrollController,
-                                        itemCount: context.watch<DashBoardProvider>().userChatDetails.length,
-                                        scrollDirection: Axis.vertical,
-                                        shrinkWrap: true,
-                                        reverse: true,
-                                        physics: const ClampingScrollPhysics(),
-                                        itemBuilder: (_, index) {
-                                          var bottomPadding = 10.0;
-                                          if(index == 0) {
-                                            bottomPadding = 100;
-                                          }
-                                          return Column(
-                                            crossAxisAlignment: context.watch<DashBoardProvider>().userChatDetails[index].isOwnMessage ?
-                                            CrossAxisAlignment.end : CrossAxisAlignment.start,
-                                            children: [
-                                              if(context.watch<DashBoardProvider>().userChatDetails[index].userId ==
-                                                  context.watch<DashBoardProvider>().userDetails[context.watch<DashBoardProvider>().userSelectedIndex].userId)
-                                                _displaySeparatedDate(index: index, context: context),
-                                              if(context.watch<DashBoardProvider>().userChatDetails[index].userId ==
-                                                  context.watch<DashBoardProvider>().userDetails[context.watch<DashBoardProvider>().userSelectedIndex].userId)
-                                              Container(
-                                                margin: EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0, bottom: bottomPadding),
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  color: context.watch<DashBoardProvider>().userChatDetails[index].isOwnMessage ?
-                                                  const Color(0xFF55b0ab) : const Color(0xFFf2f2f1),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                                                  child: Text(
-                                                    context.watch<DashBoardProvider>().userChatDetails[index].message,
-                                                    style: const TextStyle(
-                                                      fontWeight: FontWeight.w500,
-                                                      fontSize: 14.0,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      ),
+                                      buildChatList(context),
                                       Positioned(
                                         bottom: 0,
                                         left: 0,
@@ -692,23 +650,72 @@ class ProjectDetails extends StatelessWidget {
     );
   }
 
+  ListView buildChatList(BuildContext context) {
+    final List<UserChatDetailsModel> filteredList = context.watch<DashBoardProvider>().userChatDetails.where((chat) =>
+    chat.userId == context.watch<DashBoardProvider>().userDetails[context.watch<DashBoardProvider>().userSelectedIndex].userId).toList();
+    return ListView.builder(
+      controller: context.watch<DashBoardProvider>().scrollController,
+      itemCount: filteredList.length,
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      reverse: true,
+      physics: const ClampingScrollPhysics(),
+      itemBuilder: (_, index) {
+        var bottomPadding = 10.0;
+        if(index == 0) {
+          bottomPadding = 100;
+        }
+        return Column(
+          crossAxisAlignment: filteredList[index].isOwnMessage ?
+          CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+              _displaySeparatedDate(index: index, context: context, filteredList: filteredList),
+              Container(
+                margin: EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0, bottom: bottomPadding),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: filteredList[index].isOwnMessage ?
+                  const Color(0xFF55b0ab) : const Color(0xFFf2f2f1),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                  child: Text(
+                    filteredList[index].message,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+        },
+    );
+  }
+
   Widget _displaySeparatedDate({
     required final int index,
     required final BuildContext context,
+    required final List<UserChatDetailsModel> filteredList,
   }) {
-    final String currentIndexDate = context.watch<DashBoardProvider>().userChatDetails[index].time.toString().substring(0, 10);
+    final String currentIndexDate = filteredList[index].time.toString().substring(0, 10);
     String nextIndexDate = '';
-    if(index != context.watch<DashBoardProvider>().userChatDetails.length - 1) {
-      nextIndexDate = (index + 1) > context.watch<DashBoardProvider>().userChatDetails.length
-          ? '' : context.watch<DashBoardProvider>().userChatDetails[index + 1].time.toString().substring(0, 10);
+    if(filteredList.length > 1) {
+      if(index != filteredList.length - 1) {
+        nextIndexDate = (index + 1) > filteredList.length
+            ? '' : filteredList[index + 1].time.toString().substring(0, 10);
+      }
     }
+
     if (currentIndexDate != nextIndexDate) {
       // Get current date and check what needs to be displayed
-      final String displayDate = context.watch<DashBoardProvider>().userChatDetails[index].time.toString().substring(0, 10) ==
+      final String displayDate = filteredList[index].time.toString().substring(0, 10) ==
           DateTime.now().toString().substring(0, 10)
           ? 'Today'
           : DateFormat.yMMMMd().format(
-        DateTime.parse(context.watch<DashBoardProvider>().userChatDetails[index].time.toString(),),
+        DateTime.parse(filteredList[index].time.toString(),),
       );
       return Center(
         child: Text(

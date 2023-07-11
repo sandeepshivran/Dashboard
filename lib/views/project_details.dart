@@ -576,7 +576,7 @@ class ProjectDetails extends StatelessWidget {
                                             children: [
                                               if(context.watch<DashBoardProvider>().userChatDetails[index].userId ==
                                                   context.watch<DashBoardProvider>().userDetails[context.watch<DashBoardProvider>().userSelectedIndex].userId)
-                                              _displaySeparatedDate(index: index, context: context),
+                                                _displaySeparatedDate(index: index, context: context),
                                               if(context.watch<DashBoardProvider>().userChatDetails[index].userId ==
                                                   context.watch<DashBoardProvider>().userDetails[context.watch<DashBoardProvider>().userSelectedIndex].userId)
                                               Container(
@@ -697,10 +697,11 @@ class ProjectDetails extends StatelessWidget {
     required final BuildContext context,
   }) {
     final String currentIndexDate = context.watch<DashBoardProvider>().userChatDetails[index].time.toString().substring(0, 10);
-    final String nextIndexDate =
-    (index + 1) >= context.watch<DashBoardProvider>().userChatDetails.length
-        ? ''
-        : context.watch<DashBoardProvider>().userChatDetails[index].time.toString().substring(0, 10);
+    String nextIndexDate = '';
+    if(index != context.watch<DashBoardProvider>().userChatDetails.length - 1) {
+      nextIndexDate = (index + 1) > context.watch<DashBoardProvider>().userChatDetails.length
+          ? '' : context.watch<DashBoardProvider>().userChatDetails[index + 1].time.toString().substring(0, 10);
+    }
     if (currentIndexDate != nextIndexDate) {
       // Get current date and check what needs to be displayed
       final String displayDate = context.watch<DashBoardProvider>().userChatDetails[index].time.toString().substring(0, 10) ==
